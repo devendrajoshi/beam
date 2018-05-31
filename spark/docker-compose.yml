@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  master:
+    build: .
+    image: deven/spark-master:2.3.0
+    ports:
+      - 8080:8080
+      - 6066:6066
+      - 7077:7077
+    entrypoint:
+      - /sbin/start-spark-master.sh
+
+  slave:
+    image: deven/spark-master:2.3.0
+    depends_on:
+      - master
+    command: ["./wait-for-it.sh", "master:7077"]
+    entrypoint:
+      - /sbin/start-spark-slave.sh
+
