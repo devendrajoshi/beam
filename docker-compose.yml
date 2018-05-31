@@ -1,0 +1,33 @@
+version: "2.1"
+services:
+  jobmanager:
+    image: flink:1.4.2-hadoop28-scala_2.11-alpine
+    expose:
+      - "6123"
+    ports:
+      - "8081:8081"
+      - "6123:6123"
+      - "6124:6124"
+    volumes:
+      - ./jm_conf:/opt/flink/conf
+    command: jobmanager
+    environment:
+      - JOB_MANAGER_RPC_ADDRESS=jobmanager
+
+  taskmanager:
+    image: flink:1.4.2-hadoop28-scala_2.11-alpine
+    expose:
+      - "6121"
+      - "6122"
+    ports:
+      - "6121:6121"
+      - "6122:6122"
+    volumes:
+      - ./tm_conf:/opt/flink/conf
+    depends_on:
+      - jobmanager
+    command: taskmanager
+    links:
+      - "jobmanager:jobmanager"
+    environment:
+      - JOB_MANAGER_RPC_ADDRESS=jobmanager
