@@ -16,6 +16,7 @@ services:
     depends_on:
       - master
     command: ["./wait-for-it.sh", "master:7077"]
+    command: spark://master:7077
     entrypoint:
       - /sbin/start-spark-slave.sh
 

@@ -20,6 +20,8 @@ ADD start-spark-master.sh /sbin/
 
 ADD start-spark-slave.sh /sbin/
 
+COPY conf ${SPARK_HOME}/conf
+
 
 WORKDIR ${SPARK_HOME}
 
